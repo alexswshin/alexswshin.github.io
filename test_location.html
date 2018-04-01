@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title id = "title">myGoogleMap</title>
+    <style>
+      #map{
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My Google Map</h1>
+    <div id = "map"></div>
+
+    <script type="text/javascript">
+
+      class Location {
+
+        constructor(){
+          this.lat = 0;
+          this.lng = 0;
+          this.log_loc();
+          this.continuously_update_loc();
+        }
+
+        log_loc() {
+          navigator.geolocation.getCurrentPosition((pos) => {
+            this.lat = pos.coords.latitude;
+            this.lng = pos.coords.longitude;
+            this.print_loc();
+          });
+        }
+
+        continuously_update_loc() {
+          navigator.geolocation.watchPosition((pos) => {
+            this.lat = pos.coords.latitude;
+            this.lng = pos.coords.longitude;
+            this.print_loc();
+          });
+        }
+
+        print_loc() {
+          console.log(this.lat);
+          console.log(this.lng);
+        }
+      }
+
+      function initMap(){
+
+        var lat, lng;
+
+        var options = {
+          zoom:7,
+          center: {lat:40, lng:-75}
+        }
+
+        var map = new google.maps.Map(document.getElementById('map'),options)
+
+        var loc = new Location();
+
+        var marker = new google.maps.Marker({
+          position:{lat:loc.lat, lng:loc.lng},
+          map:map,
+          icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+        });
+
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBm1U0LUpPZIraBBb6OxAMa9O6mXnrJgzk&callback=initMap">
+    </script>
+  </body>
+</html>
